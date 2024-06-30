@@ -1,8 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Query, Path
+# from pydantic import BaseModel
 
 app = FastAPI()
 #app = FastAPI(swagger_ui_parameters={"syntaxHighlight": False})
 app = FastAPI(swagger_ui_parametres={"syntaxHighlight.theme": "obsidian"})
+
+# class Item(BaseModel):
+#     name: str
+#     price: float
+#     is_offer: bool = None
 
 # @app.get("/")
 # async def root():
@@ -16,6 +22,18 @@ app = FastAPI(swagger_ui_parametres={"syntaxHighlight.theme": "obsidian"})
 # async def read_item(item_id: int, q: str = None):
 #     return {"item_id": item_id, "q": q}
 
+# @app.get("/items/{item_id}")
+# async def read_item(item_id: int, q: str = None):
+#     return {"item_id": item_id, "q": q}
+
+# @app.post("/items/")
+# async def create_item(item: Item):
+#     return item
+
+# @app.get("/items/")
+# async def read_items(q: str = Query(None, min_length=3, max_length=50)):
+#     return {"q": q}
+
 @app.get("/items/{item_id}")
-async def read_item(item_id: int, q: str = None):
-    return {"item_id": item_id, "q": q}
+async def read_item(item_id: int = Path(..., title="The ID of the item to get", ge=1)):
+    return {"item_id": item_id}
